@@ -1,5 +1,8 @@
 ﻿
+using System;
 using System.Runtime.InteropServices;
+
+
 public partial class NativeConstants
 {
 
@@ -114,6 +117,411 @@ public enum Visibility
     LEAVE_VISIBILITY,
 }
 
+public partial class Errors
+{
+    public const UInt32 ERROR_ok = 0x0000;
+    public const UInt32 ERROR_undefined = 0x0001;
+    public const UInt32 ERROR_not_implemented = 0x0002;
+    public const UInt32 ERROR_ok_no_update = 0x0003;
+    public const UInt32 ERROR_dont_notify = 0x0004;
+    public const UInt32 ERROR_lib_time_limit_reached = 0x0005;
+
+    //dunno
+    public const UInt32 ERROR_command_not_found = 0x0100;
+    public const UInt32 ERROR_unable_to_bind_network_port = 0x0101;
+    public const UInt32 ERROR_no_network_port_available = 0x0102;
+
+    //client
+    public const UInt32 ERROR_client_invalid_id = 0x0200;
+    public const UInt32 ERROR_client_nickname_inuse = 0x0201;
+    public const UInt32 ERROR_client_protocol_limit_reached = 0x0203;
+    public const UInt32 ERROR_client_invalid_type = 0x0204;
+    public const UInt32 ERROR_client_already_subscribed = 0x0205;
+    public const UInt32 ERROR_client_not_logged_in = 0x0206;
+    public const UInt32 ERROR_client_could_not_validate_identity = 0x0207;
+    public const UInt32 ERROR_client_version_outdated = 0x020a;
+    public const UInt32 ERROR_client_is_flooding = 0x020c;
+    public const UInt32 ERROR_client_hacked = 0x020d;
+    public const UInt32 ERROR_client_cannot_verify_now = 0x020e;
+    public const UInt32 ERROR_client_login_not_permitted = 0x020f;
+    public const UInt32 ERROR_client_not_subscribed = 0x0210;
+
+    //channel
+    public const UInt32 ERROR_channel_invalid_id = 0x0300;
+    public const UInt32 ERROR_channel_protocol_limit_reached = 0x0301;
+    public const UInt32 ERROR_channel_already_in = 0x0302;
+    public const UInt32 ERROR_channel_name_inuse = 0x0303;
+    public const UInt32 ERROR_channel_not_empty = 0x0304;
+    public const UInt32 ERROR_channel_can_not_delete_default = 0x0305;
+    public const UInt32 ERROR_channel_default_require_permanent = 0x0306;
+    public const UInt32 ERROR_channel_invalid_flags = 0x0307;
+    public const UInt32 ERROR_channel_parent_not_permanent = 0x0308;
+    public const UInt32 ERROR_channel_maxclients_reached = 0x0309;
+    public const UInt32 ERROR_channel_maxfamily_reached = 0x030a;
+    public const UInt32 ERROR_channel_invalid_order = 0x030b;
+    public const UInt32 ERROR_channel_no_filetransfer_supported = 0x030c;
+    public const UInt32 ERROR_channel_invalid_password = 0x030d;
+    public const UInt32 ERROR_channel_invalid_security_hash = 0x030f; //note 0x030e is defined in public_rare_errors;
+
+    //server
+    public const UInt32 ERROR_server_invalid_id = 0x0400;
+    public const UInt32 ERROR_server_running = 0x0401;
+    public const UInt32 ERROR_server_is_shutting_down = 0x0402;
+    public const UInt32 ERROR_server_maxclients_reached = 0x0403;
+    public const UInt32 ERROR_server_invalid_password = 0x0404;
+    public const UInt32 ERROR_server_is_virtual = 0x0407;
+    public const UInt32 ERROR_server_is_not_running = 0x0409;
+    public const UInt32 ERROR_server_is_booting = 0x040a;
+    public const UInt32 ERROR_server_status_invalid = 0x040b;
+    public const UInt32 ERROR_server_version_outdated = 0x040d;
+    public const UInt32 ERROR_server_duplicate_running = 0x040e;
+
+    //parameter
+    public const UInt32 ERROR_parameter_quote = 0x0600;
+    public const UInt32 ERROR_parameter_invalid_count = 0x0601;
+    public const UInt32 ERROR_parameter_invalid = 0x0602;
+    public const UInt32 ERROR_parameter_not_found = 0x0603;
+    public const UInt32 ERROR_parameter_convert = 0x0604;
+    public const UInt32 ERROR_parameter_invalid_size = 0x0605;
+    public const UInt32 ERROR_parameter_missing = 0x0606;
+    public const UInt32 ERROR_parameter_checksum = 0x0607;
+
+    //unsorted, need further investigation
+    public const UInt32 ERROR_vs_critical = 0x0700;
+    public const UInt32 ERROR_connection_lost = 0x0701;
+    public const UInt32 ERROR_not_connected = 0x0702;
+    public const UInt32 ERROR_no_cached_connection_info = 0x0703;
+    public const UInt32 ERROR_currently_not_possible = 0x0704;
+    public const UInt32 ERROR_failed_connection_initialisation = 0x0705;
+    public const UInt32 ERROR_could_not_resolve_hostname = 0x0706;
+    public const UInt32 ERROR_invalid_server_connection_handler_id = 0x0707;
+    public const UInt32 ERROR_could_not_initialise_input_manager = 0x0708;
+    public const UInt32 ERROR_clientlibrary_not_initialised = 0x0709;
+    public const UInt32 ERROR_serverlibrary_not_initialised = 0x070a;
+    public const UInt32 ERROR_whisper_too_many_targets = 0x070b;
+    public const UInt32 ERROR_whisper_no_targets = 0x070c;
+
+    //sound
+    public const UInt32 ERROR_sound_preprocessor_disabled = 0x0900;
+    public const UInt32 ERROR_sound_internal_preprocessor = 0x0901;
+    public const UInt32 ERROR_sound_internal_encoder = 0x0902;
+    public const UInt32 ERROR_sound_internal_playback = 0x0903;
+    public const UInt32 ERROR_sound_no_capture_device_available = 0x0904;
+    public const UInt32 ERROR_sound_no_playback_device_available = 0x0905;
+    public const UInt32 ERROR_sound_could_not_open_capture_device = 0x0906;
+    public const UInt32 ERROR_sound_could_not_open_playback_device = 0x0907;
+    public const UInt32 ERROR_sound_handler_has_device = 0x0908;
+    public const UInt32 ERROR_sound_invalid_capture_device = 0x0909;
+    public const UInt32 ERROR_sound_invalid_playback_device = 0x090a;
+    public const UInt32 ERROR_sound_invalid_wave = 0x090b;
+    public const UInt32 ERROR_sound_unsupported_wave = 0x090c;
+    public const UInt32 ERROR_sound_open_wave = 0x090d;
+    public const UInt32 ERROR_sound_internal_capture = 0x090e;
+    public const UInt32 ERROR_sound_device_in_use = 0x090f;
+    public const UInt32 ERROR_sound_device_already_registerred = 0x0910;
+    public const UInt32 ERROR_sound_unknown_device = 0x0911;
+    public const UInt32 ERROR_sound_unsupported_frequency = 0x0912;
+    public const UInt32 ERROR_sound_invalid_channel_count = 0x0913;
+    public const UInt32 ERROR_sound_read_wave = 0x0914;
+    public const UInt32 ERROR_sound_need_more_data = 0x0915; //for internal purposes only
+    public const UInt32 ERROR_sound_device_busy = 0x0916; //for internal purposes only
+    public const UInt32 ERROR_sound_no_data = 0x0917;
+    public const UInt32 ERROR_sound_channel_mask_mismatch = 0x0918;
+
+
+    //permissions
+    public const UInt32 ERROR_permissions_client_insufficient = 0x0a08;
+    public const UInt32 ERROR_permissions = 0x0a0c;
+
+    //accounting
+    public const UInt32 ERROR_accounting_virtualserver_limit_reached = 0x0b00;
+    public const UInt32 ERROR_accounting_slot_limit_reached = 0x0b01;
+    public const UInt32 ERROR_accounting_license_file_not_found = 0x0b02;
+    public const UInt32 ERROR_accounting_license_date_not_ok = 0x0b03;
+    public const UInt32 ERROR_accounting_unable_to_connect_to_server = 0x0b04;
+    public const UInt32 ERROR_accounting_unknown_error = 0x0b05;
+    public const UInt32 ERROR_accounting_server_error = 0x0b06;
+    public const UInt32 ERROR_accounting_instance_limit_reached = 0x0b07;
+    public const UInt32 ERROR_accounting_instance_check_error = 0x0b08;
+    public const UInt32 ERROR_accounting_license_file_invalid = 0x0b09;
+    public const UInt32 ERROR_accounting_running_elsewhere = 0x0b0a;
+    public const UInt32 ERROR_accounting_instance_duplicated = 0x0b0b;
+    public const UInt32 ERROR_accounting_already_started = 0x0b0c;
+    public const UInt32 ERROR_accounting_not_started = 0x0b0d;
+    public const UInt32 ERROR_accounting_to_many_starts = 0x0b0e;
+
+    //provisioning server
+    public const UInt32 ERROR_provisioning_invalid_password = 0x1100;
+    public const UInt32 ERROR_provisioning_invalid_request = 0x1101;
+    public const UInt32 ERROR_provisioning_no_slots_available = 0x1102;
+    public const UInt32 ERROR_provisioning_pool_missing = 0x1103;
+    public const UInt32 ERROR_provisioning_pool_unknown = 0x1104;
+    public const UInt32 ERROR_provisioning_unknown_ip_location = 0x1105;
+    public const UInt32 ERROR_provisioning_internal_tries_exceeded = 0x1106;
+    public const UInt32 ERROR_provisioning_too_many_slots_requested = 0x1107;
+    public const UInt32 ERROR_provisioning_too_many_reserved = 0x1108;
+    public const UInt32 ERROR_provisioning_could_not_connect = 0x1109;
+    public const UInt32 ERROR_provisioning_auth_server_not_connected = 0x1110;
+    public const UInt32 ERROR_provisioning_auth_data_too_large = 0x1111;
+    public const UInt32 ERROR_provisioning_already_initialized = 0x1112;
+    public const UInt32 ERROR_provisioning_not_initialized = 0x1113;
+    public const UInt32 ERROR_provisioning_connecting = 0x1114;
+    public const UInt32 ERROR_provisioning_already_connected = 0x1115;
+    public const UInt32 ERROR_provisioning_not_connected = 0x1116;
+    public const UInt32 ERROR_provisioning_io_error = 0x1117;
+    public const UInt32 ERROR_provisioning_invalid_timeout = 0x1118;
+    public const UInt32 ERROR_provisioning_ts3server_not_found = 0x1119;
+    public const UInt32 ERROR_provisioning_no_permission = 0x111A;
+
+    public partial class Client
+    {
+        public const UInt32 ERROR_client_invalid_id = 0x0200;
+        public const UInt32 ERROR_client_nickname_inuse = 0x0201;
+        public const UInt32 ERROR_client_protocol_limit_reached = 0x0203;
+        public const UInt32 ERROR_client_invalid_type = 0x0204;
+        public const UInt32 ERROR_client_already_subscribed = 0x0205;
+        public const UInt32 ERROR_client_not_logged_in = 0x0206;
+        public const UInt32 ERROR_client_could_not_validate_identity = 0x0207;
+        public const UInt32 ERROR_client_version_outdated = 0x020a;
+        public const UInt32 ERROR_client_is_flooding = 0x020c;
+        public const UInt32 ERROR_client_hacked = 0x020d;
+        public const UInt32 ERROR_client_cannot_verify_now = 0x020e;
+        public const UInt32 ERROR_client_login_not_permitted = 0x020f;
+        public const UInt32 ERROR_client_not_subscribed = 0x0210;
+    }
+
+    public partial class Channel
+    {
+        public const UInt32 ERROR_channel_invalid_id = 0x0300;
+        public const UInt32 ERROR_channel_protocol_limit_reached = 0x0301;
+        public const UInt32 ERROR_channel_already_in = 0x0302;
+        public const UInt32 ERROR_channel_name_inuse = 0x0303;
+        public const UInt32 ERROR_channel_not_empty = 0x0304;
+        public const UInt32 ERROR_channel_can_not_delete_default = 0x0305;
+        public const UInt32 ERROR_channel_default_require_permanent = 0x0306;
+        public const UInt32 ERROR_channel_invalid_flags = 0x0307;
+        public const UInt32 ERROR_channel_parent_not_permanent = 0x0308;
+        public const UInt32 ERROR_channel_maxclients_reached = 0x0309;
+        public const UInt32 ERROR_channel_maxfamily_reached = 0x030a;
+        public const UInt32 ERROR_channel_invalid_order = 0x030b;
+        public const UInt32 ERROR_channel_no_filetransfer_supported = 0x030c;
+        public const UInt32 ERROR_channel_invalid_password = 0x030d;
+        public const UInt32 ERROR_channel_invalid_security_hash = 0x030f; //note 0x030e is defined in public_rare_errors;
+    }
+
+    public partial class Server
+    {
+        public const UInt32 ERROR_server_invalid_id = 0x0400;
+        public const UInt32 ERROR_server_running = 0x0401;
+        public const UInt32 ERROR_server_is_shutting_down = 0x0402;
+        public const UInt32 ERROR_server_maxclients_reached = 0x0403;
+        public const UInt32 ERROR_server_invalid_password = 0x0404;
+        public const UInt32 ERROR_server_is_virtual = 0x0407;
+        public const UInt32 ERROR_server_is_not_running = 0x0409;
+        public const UInt32 ERROR_server_is_booting = 0x040a;
+        public const UInt32 ERROR_server_status_invalid = 0x040b;
+        public const UInt32 ERROR_server_version_outdated = 0x040d;
+        public const UInt32 ERROR_server_duplicate_running = 0x040e;
+    }
+
+    public partial class Parameter
+    {
+        public const UInt32 ERROR_parameter_quote = 0x0600;
+        public const UInt32 ERROR_parameter_invalid_count = 0x0601;
+        public const UInt32 ERROR_parameter_invalid = 0x0602;
+        public const UInt32 ERROR_parameter_not_found = 0x0603;
+        public const UInt32 ERROR_parameter_convert = 0x0604;
+        public const UInt32 ERROR_parameter_invalid_size = 0x0605;
+        public const UInt32 ERROR_parameter_missing = 0x0606;
+        public const UInt32 ERROR_parameter_checksum = 0x0607;
+    }
+
+    public partial class Sound
+    {
+        public const UInt32 ERROR_sound_preprocessor_disabled = 0x0900;
+        public const UInt32 ERROR_sound_internal_preprocessor = 0x0901;
+        public const UInt32 ERROR_sound_internal_encoder = 0x0902;
+        public const UInt32 ERROR_sound_internal_playback = 0x0903;
+        public const UInt32 ERROR_sound_no_capture_device_available = 0x0904;
+        public const UInt32 ERROR_sound_no_playback_device_available = 0x0905;
+        public const UInt32 ERROR_sound_could_not_open_capture_device = 0x0906;
+        public const UInt32 ERROR_sound_could_not_open_playback_device = 0x0907;
+        public const UInt32 ERROR_sound_handler_has_device = 0x0908;
+        public const UInt32 ERROR_sound_invalid_capture_device = 0x0909;
+        public const UInt32 ERROR_sound_invalid_playback_device = 0x090a;
+        public const UInt32 ERROR_sound_invalid_wave = 0x090b;
+        public const UInt32 ERROR_sound_unsupported_wave = 0x090c;
+        public const UInt32 ERROR_sound_open_wave = 0x090d;
+        public const UInt32 ERROR_sound_internal_capture = 0x090e;
+        public const UInt32 ERROR_sound_device_in_use = 0x090f;
+        public const UInt32 ERROR_sound_device_already_registerred = 0x0910;
+        public const UInt32 ERROR_sound_unknown_device = 0x0911;
+        public const UInt32 ERROR_sound_unsupported_frequency = 0x0912;
+        public const UInt32 ERROR_sound_invalid_channel_count = 0x0913;
+        public const UInt32 ERROR_sound_read_wave = 0x0914;
+        public const UInt32 ERROR_sound_need_more_data = 0x0915; //for internal purposes only
+        public const UInt32 ERROR_sound_device_busy = 0x0916; //for internal purposes only
+        public const UInt32 ERROR_sound_no_data = 0x0917;
+        public const UInt32 ERROR_sound_channel_mask_mismatch = 0x0918;
+    }
+
+    public partial class General
+    {
+        public const UInt32 ERROR_ok = 0x0000;
+        public const UInt32 ERROR_undefined = 0x0001;
+        public const UInt32 ERROR_not_implemented = 0x0002;
+        public const UInt32 ERROR_ok_no_update = 0x0003;
+        public const UInt32 ERROR_dont_notify = 0x0004;
+        public const UInt32 ERROR_lib_time_limit_reached = 0x0005;
+
+        //dunno
+        public const UInt32 ERROR_command_not_found = 0x0100;
+        public const UInt32 ERROR_unable_to_bind_network_port = 0x0101;
+        public const UInt32 ERROR_no_network_port_available = 0x0102;
+    }
+    public partial class Permission
+    {
+        public const UInt32 ERROR_permissions_client_insufficient = 0x0a08;
+        public const UInt32 ERROR_permissions = 0x0a0c;
+    }
+
+    public partial class Accounting
+    {
+        public const UInt32 ERROR_accounting_virtualserver_limit_reached = 0x0b00;
+        public const UInt32 ERROR_accounting_slot_limit_reached = 0x0b01;
+        public const UInt32 ERROR_accounting_license_file_not_found = 0x0b02;
+        public const UInt32 ERROR_accounting_license_date_not_ok = 0x0b03;
+        public const UInt32 ERROR_accounting_unable_to_connect_to_server = 0x0b04;
+        public const UInt32 ERROR_accounting_unknown_error = 0x0b05;
+        public const UInt32 ERROR_accounting_server_error = 0x0b06;
+        public const UInt32 ERROR_accounting_instance_limit_reached = 0x0b07;
+        public const UInt32 ERROR_accounting_instance_check_error = 0x0b08;
+        public const UInt32 ERROR_accounting_license_file_invalid = 0x0b09;
+        public const UInt32 ERROR_accounting_running_elsewhere = 0x0b0a;
+        public const UInt32 ERROR_accounting_instance_duplicated = 0x0b0b;
+        public const UInt32 ERROR_accounting_already_started = 0x0b0c;
+        public const UInt32 ERROR_accounting_not_started = 0x0b0d;
+        public const UInt32 ERROR_accounting_to_many_starts = 0x0b0e;
+    }
+
+    public partial class Provisioning
+    {
+        public const UInt32 ERROR_provisioning_invalid_password = 0x1100;
+        public const UInt32 ERROR_provisioning_invalid_request = 0x1101;
+        public const UInt32 ERROR_provisioning_no_slots_available = 0x1102;
+        public const UInt32 ERROR_provisioning_pool_missing = 0x1103;
+        public const UInt32 ERROR_provisioning_pool_unknown = 0x1104;
+        public const UInt32 ERROR_provisioning_unknown_ip_location = 0x1105;
+        public const UInt32 ERROR_provisioning_internal_tries_exceeded = 0x1106;
+        public const UInt32 ERROR_provisioning_too_many_slots_requested = 0x1107;
+        public const UInt32 ERROR_provisioning_too_many_reserved = 0x1108;
+        public const UInt32 ERROR_provisioning_could_not_connect = 0x1109;
+        public const UInt32 ERROR_provisioning_auth_server_not_connected = 0x1110;
+        public const UInt32 ERROR_provisioning_auth_data_too_large = 0x1111;
+        public const UInt32 ERROR_provisioning_already_initialized = 0x1112;
+        public const UInt32 ERROR_provisioning_not_initialized = 0x1113;
+        public const UInt32 ERROR_provisioning_connecting = 0x1114;
+        public const UInt32 ERROR_provisioning_already_connected = 0x1115;
+        public const UInt32 ERROR_provisioning_not_connected = 0x1116;
+        public const UInt32 ERROR_provisioning_io_error = 0x1117;
+        public const UInt32 ERROR_provisioning_invalid_timeout = 0x1118;
+        public const UInt32 ERROR_provisioning_ts3server_not_found = 0x1119;
+        public const UInt32 ERROR_provisioning_no_permission = 0x111A;
+    }
+    public partial class Rare
+    {
+        //The idea here is: the values are 2 bytes wide, the first byte identifies the group, the second the count within that group
+
+        //client
+        public const UInt32 ERROR_client_invalid_password = 0x0208;
+        public const UInt32 ERROR_client_too_many_clones_connected = 0x0209;
+        public const UInt32 ERROR_client_is_online = 0x020b;
+
+        //channel
+        public const UInt32 ERROR_channel_is_private_channel = 0x030e;
+        //note 0x030f is defined in public_errors;
+
+        //database
+        public const UInt32 ERROR_database = 0x0500;
+        public const UInt32 ERROR_database_empty_result = 0x0501;
+        public const UInt32 ERROR_database_duplicate_entry = 0x0502;
+        public const UInt32 ERROR_database_no_modifications = 0x0503;
+        public const UInt32 ERROR_database_constraint = 0x0504;
+        public const UInt32 ERROR_database_reinvoke = 0x0505;
+
+        //file transfer
+        public const UInt32 ERROR_file_invalid_name = 0x0800;
+        public const UInt32 ERROR_file_invalid_permissions = 0x0801;
+        public const UInt32 ERROR_file_already_exists = 0x0802;
+        public const UInt32 ERROR_file_not_found = 0x0803;
+        public const UInt32 ERROR_file_io_error = 0x0804;
+        public const UInt32 ERROR_file_invalid_transfer_id = 0x0805;
+        public const UInt32 ERROR_file_invalid_path = 0x0806;
+        public const UInt32 ERROR_file_no_files_available = 0x0807;
+        public const UInt32 ERROR_file_overwrite_excludes_resume = 0x0808;
+        public const UInt32 ERROR_file_invalid_size = 0x0809;
+        public const UInt32 ERROR_file_already_in_use = 0x080a;
+        public const UInt32 ERROR_file_could_not_open_connection = 0x080b;
+        public const UInt32 ERROR_file_no_space_left_on_device = 0x080c;
+        public const UInt32 ERROR_file_exceeds_file_system_maximum_size = 0x080d;
+        public const UInt32 ERROR_file_transfer_connection_timeout = 0x080e;
+        public const UInt32 ERROR_file_connection_lost = 0x080f;
+        public const UInt32 ERROR_file_exceeds_supplied_size = 0x0810;
+        public const UInt32 ERROR_file_transfer_complete = 0x0811;
+        public const UInt32 ERROR_file_transfer_canceled = 0x0812;
+        public const UInt32 ERROR_file_transfer_interrupted = 0x0813;
+        public const UInt32 ERROR_file_transfer_server_quota_exceeded = 0x0814;
+        public const UInt32 ERROR_file_transfer_client_quota_exceeded = 0x0815;
+        public const UInt32 ERROR_file_transfer_reset = 0x0816;
+        public const UInt32 ERROR_file_transfer_limit_reached = 0x0817;
+
+        //permissions
+        public const UInt32 ERROR_permission_invalid_group_id = 0x0a00;
+        public const UInt32 ERROR_permission_duplicate_entry = 0x0a01;
+        public const UInt32 ERROR_permission_invalid_perm_id = 0x0a02;
+        public const UInt32 ERROR_permission_empty_result = 0x0a03;
+        public const UInt32 ERROR_permission_default_group_forbidden = 0x0a04;
+        public const UInt32 ERROR_permission_invalid_size = 0x0a05;
+        public const UInt32 ERROR_permission_invalid_value = 0x0a06;
+        public const UInt32 ERROR_permissions_group_not_empty = 0x0a07;
+        public const UInt32 ERROR_permissions_insufficient_group_power = 0x0a09;
+        public const UInt32 ERROR_permissions_insufficient_permission_power = 0x0a0a;
+        public const UInt32 ERROR_permission_template_group_is_used = 0x0a0b;
+        //0x0a0c is in public_errors.h
+
+        //server
+        public const UInt32 ERROR_server_deployment_active = 0x0405;
+        public const UInt32 ERROR_server_unable_to_stop_own_server = 0x0406;
+        public const UInt32 ERROR_server_wrong_machineid = 0x0408;
+        public const UInt32 ERROR_server_modal_quit = 0x040c;
+
+        //messages
+        public const UInt32 ERROR_message_invalid_id = 0x0c00;
+
+        //ban
+        public const UInt32 ERROR_ban_invalid_id = 0x0d00;
+        public const UInt32 ERROR_connect_failed_banned = 0x0d01;
+        public const UInt32 ERROR_rename_failed_banned = 0x0d02;
+        public const UInt32 ERROR_ban_flooding = 0x0d03;
+
+        //tts
+        public const UInt32 ERROR_tts_unable_to_initialize = 0x0e00;
+
+        //privilege key
+        public const UInt32 ERROR_privilege_key_invalid = 0x0f00;
+
+        //voip
+        public const UInt32 ERROR_voip_pjsua = 0x1000;
+        public const UInt32 ERROR_voip_already_initialized = 0x1001;
+        public const UInt32 ERROR_voip_too_many_accounts = 0x1002;
+        public const UInt32 ERROR_voip_invalid_account = 0x1003;
+        public const UInt32 ERROR_voip_internal_error = 0x1004;
+        public const UInt32 ERROR_voip_invalid_connectionId = 0x1005;
+        public const UInt32 ERROR_voip_cannot_answer_initiated_call = 0x1006;
+        public const UInt32 ERROR_voip_not_initialized = 0x1007;
+
+    }
+}
 public enum ConnectStatus
 {
 
@@ -548,6 +956,16 @@ public struct TS3_VECTOR
     public float z;
 }
 
+public struct anyID
+{
+    private ushort value;
+
+    public anyID(ushort v)
+    {
+        value = v;
+    }
+}
+
 public enum GroupWhisperType
 {
 
@@ -637,7 +1055,7 @@ public enum PluginItemType
     PLUGIN_CLIENT,
 }
 
-public  enum PluginMenuType: int
+public enum PluginMenuType : int
 {
 
     /// PLUGIN_MENU_TYPE_GLOBAL -> 0
@@ -648,6 +1066,19 @@ public  enum PluginMenuType: int
     PLUGIN_MENU_TYPE_CLIENT,
 }
 
+[StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)] // 
+public struct MiniClientExport
+{
+    private anyID id;
+
+    public UInt64 channel;
+
+    [MarshalAsAttribute(UnmanagedType.LPStr)]
+    public string indent;
+
+    [MarshalAsAttribute(UnmanagedType.LPStr)]
+    public string nickname;
+}
 
 [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
 public unsafe struct PluginMenuItem
@@ -659,13 +1090,13 @@ public unsafe struct PluginMenuItem
     /// int
     public int id;
 
-   // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
+    // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
     public fixed char text[128];
 
     public fixed char icon[128];
     /// char[128]
-   // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
-   // public string text;
+    // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
+    // public string text;
 
     /// char[128]
     //[System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]

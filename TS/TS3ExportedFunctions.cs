@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -11,14 +12,25 @@ namespace TS
 
     public class TS3ExportedFunctions
     {
-        
-
         static Boolean Is64Bit()
         {
 
             return Marshal.SizeOf(typeof(IntPtr)) == 8;
 
         }
+
+        static void TryCatch(Action function, Action<Exception> exep)
+        {
+            try
+            {
+                function();
+            }
+            catch (Exception ex)
+            {
+                exep(ex);
+            }
+        }
+
         [DllExport]
         public static String ts3plugin_name()
         {
@@ -48,25 +60,22 @@ namespace TS
         public static void ts3plugin_setFunctionPointers(TS3Functions funcs)
         {
             TSPlugin.Instance.Functions = funcs;
-            funcs.printMessageToCurrentTab("TEST");
-           // funcs("TEST");
         }
         [DllExport]
         public static int ts3plugin_init()
         {
             return TSPlugin.Instance.Init();
-        
+
         }
         [DllExport]
         public static void ts3plugin_shutdown()
         {
-
+            TSPlugin.Instance.Shutdown();
         }
         [DllExport]
         public static void ts3plugin_registerPluginID(String id)
         {
-            var functs = (TS3Functions)TSPlugin.Instance.Functions;
-            functs.printMessageToCurrentTab(id);
+            var functs = TSPlugin.Instance.Functions;
             TSPlugin.Instance.PluginID = id;
         }
         [DllExport]
@@ -80,7 +89,7 @@ namespace TS
             var functs = (TS3Functions)TSPlugin.Instance.Functions;
             functs.printMessageToCurrentTab(serverConnectionHandlerID.ToString());
         }
-        public unsafe static char* my_strcpy(char* destination, int buffer,char* source)
+        public unsafe static char* my_strcpy(char* destination, int buffer, char* source)
         {
             char* p = destination;
             int x = 0;
@@ -110,7 +119,7 @@ namespace TS
             menuItem->type = type;
             menuItem->id = id;
 
-           
+
             IntPtr i_ptr = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(icon);
             void* i_strPtr = i_ptr.ToPointer();
             char* i_cptr = (char*)i_strPtr;
@@ -121,7 +130,7 @@ namespace TS
             char* t_cptr = (char*)t_strPtr;
             my_strcpy(menuItem->text, 128, t_cptr);
 
-            
+
 
 
             return menuItem;
@@ -129,23 +138,22 @@ namespace TS
 
         }
 
-       
 
         [DllExport]
         public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
         {
-            
+
             int x = 1;
-            int sz = x + 1; 
-            int n = 0; 
+            int sz = x + 1;
+            int n = 0;
 
             *menuItems = (PluginMenuItem**)Marshal.AllocHGlobal((sizeof(PluginMenuItem*) * sz));
-            string name = "Test";
+            string name = "Try";
             string icon = "2.png";
-          
+
             (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, name, icon);
-        
-            (*menuItems)[n++] = null; 
+            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Unload", icon);
+            (*menuItems)[n++] = null;
             //Debug.Assert(n == sz);
 
             *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
@@ -155,17 +163,55 @@ namespace TS
             char* cptr = (char*)strPtr;
             my_strcpy(*menuIcon, 128, cptr);
 
-          
-            
+
+
         }
-    
+
         [DllExport]
-        public static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
+        public unsafe static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
         {
+            var funcs = TSPlugin.Instance.Functions;
+            UInt32 error;
+            switch (type)
+            {
+                case PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL:
+                    switch (menuItemID)
+                    {
+                        case 1:
+                            try
+                            {
+                                funcs.printMessageToCurrentTab(
+                                    $"{TSPlugin.Instance.Author}, status: {serverConnectionHandlerID}");
+                            }
+                            catch
+                            {
 
+                            }
+                            break;
+                        case 2:
+                            IntPtr v = new IntPtr();
+                            if ((error = funcs.getChannelList(serverConnectionHandlerID, ref v)) != Errors.ERROR_ok)
+                            {
+                                funcs.printMessageToCurrentTab("Failure grabbing Channel List");
+                            }
+                            else
+                            {
+                                funcs.printMessageToCurrentTab("Creating UInt64 Iterator...");
+                                UInt64 iter = Convert.ToUInt64(v);
+                                funcs.printMessageToCurrentTab("Created Iterator...");
+                            }
+                            ts3plugin_freeMemory(v);
+                            break;
+                    }
+                    break;
+            }
         }
 
- 
-
+        [DllExport]
+        public static void ts3plugin_onClientDisplayNameChanged(UInt64 serverConnectionHandlerID, anyID clientID, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string displayName, [System.Runtime.InteropServices.InAttribute()] [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)] string uniqueClientIdentifier)
+        {
+            var functions = TSPlugin.Instance.Functions;
+            functions.printMessageToCurrentTab(uniqueClientIdentifier);
+        }
     }
 }
