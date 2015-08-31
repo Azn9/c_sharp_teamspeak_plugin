@@ -9,7 +9,7 @@ using System.Text;
 namespace TS
 {
 
-    public class Exports
+    public class TS3ExportedFunctions
     {
         
 
