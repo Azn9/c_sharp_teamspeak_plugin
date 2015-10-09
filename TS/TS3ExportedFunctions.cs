@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Globalization;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Security;
 using System.Text;
 
 namespace TS
@@ -12,23 +16,12 @@ namespace TS
 
     public class TS3ExportedFunctions
     {
+
         static Boolean Is64Bit()
         {
 
             return Marshal.SizeOf(typeof(IntPtr)) == 8;
 
-        }
-
-        static void TryCatch(Action function, Action<Exception> exep)
-        {
-            try
-            {
-                function();
-            }
-            catch (Exception ex)
-            {
-                exep(ex);
-            }
         }
 
         [DllExport]
@@ -89,61 +82,13 @@ namespace TS
             var functs = (TS3Functions)TSPlugin.Instance.Functions;
             functs.printMessageToCurrentTab(serverConnectionHandlerID.ToString());
         }
-        public unsafe static char* my_strcpy(char* destination, int buffer, char* source)
-        {
-            char* p = destination;
-            int x = 0;
-            while (*source != '\0' && x < buffer)
-            {
-                *p++ = *source++;
-                x++;
-            }
-            *p = '\0';
-            return destination;
-        }
-        private static byte[] convertLPSTR(string _string)
-        {
-            List<byte> lpstr = new List<byte>();
-            foreach (char c in _string.ToCharArray())
-            {
-                lpstr.Add(Convert.ToByte(c));
-            }
-            lpstr.Add(Convert.ToByte('\0'));
-
-            return lpstr.ToArray();
-        }
-        public static unsafe PluginMenuItem* createMenuItem(PluginMenuType type, int id, String text, String icon)
-        {
-
-            PluginMenuItem* menuItem = (PluginMenuItem*)Marshal.AllocHGlobal(sizeof(PluginMenuItem));
-            menuItem->type = type;
-            menuItem->id = id;
-
-
-            IntPtr i_ptr = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(icon);
-            void* i_strPtr = i_ptr.ToPointer();
-            char* i_cptr = (char*)i_strPtr;
-            *menuItem->icon = *my_strcpy(menuItem->icon, 128, i_cptr);
-
-            IntPtr t_ptr = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(text);
-            void* t_strPtr = t_ptr.ToPointer();
-            char* t_cptr = (char*)t_strPtr;
-            my_strcpy(menuItem->text, 128, t_cptr);
-
-
-
-
-            return menuItem;
-
-
-        }
-
+        
 
         [DllExport]
         public unsafe static void ts3plugin_initMenus(PluginMenuItem*** menuItems, char** menuIcon)
         {
 
-            int x = 1;
+            int x = 2;
             int sz = x + 1;
             int n = 0;
 
@@ -151,17 +96,17 @@ namespace TS
             string name = "Try";
             string icon = "2.png";
 
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, name, icon);
-            (*menuItems)[n++] = createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Unload", icon);
+            (*menuItems)[n++] = UsefulFuncs.createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 1, name, icon);
+            (*menuItems)[n++] = UsefulFuncs.createMenuItem(PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL, 2, "Unload", icon);
             (*menuItems)[n++] = null;
-            //Debug.Assert(n == sz);
+            Debug.Assert(n == sz);
 
             *menuIcon = (char*)Marshal.AllocHGlobal(128 * sizeof(char));
 
             IntPtr ptr = System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi("t.png");
             void* strPtr = ptr.ToPointer();
             char* cptr = (char*)strPtr;
-            my_strcpy(*menuIcon, 128, cptr);
+            UsefulFuncs.my_strcpy(*menuIcon, 128, cptr);
 
 
 
@@ -171,38 +116,61 @@ namespace TS
         public unsafe static void ts3plugin_onMenuItemEvent(ulong serverConnectionHandlerID, PluginMenuType type, int menuItemID, ulong selectedItemID)
         {
             var funcs = TSPlugin.Instance.Functions;
-            UInt32 error;
+            IntPtr v = IntPtr.Zero;
             switch (type)
             {
                 case PluginMenuType.PLUGIN_MENU_TYPE_GLOBAL:
                     switch (menuItemID)
                     {
                         case 1:
-                            try
+                            // How to get all the channel's names
+                            // First, get a pointer to an array
+                            if (funcs.getChannelList(serverConnectionHandlerID, ref v) != Errors.ERROR_ok)
                             {
-                                funcs.printMessageToCurrentTab(
-                                    $"{TSPlugin.Instance.Author}, status: {serverConnectionHandlerID}");
+                                funcs.logMessage("Failed", LogLevel.LogLevel_ERROR, "Plugin", serverConnectionHandlerID);
+                                break;
                             }
-                            catch
+                            // Convert it to a ulong*
+                            ulong* ptr = (ulong*) v.ToPointer();
+                            // Iterate through the array
+                            for (ulong t = 0; ptr[t] != 0; t++)
                             {
+                                // The String result
+                                string result;
+                                // The pointer result
+                                IntPtr res = IntPtr.Zero;
+                                /*
+                                    Channel Variable Arguments:
+                                    1: The server connection ID
+                                    2: The iterated channel id
+                                    3: An IntPtr at 0, which signifies CHANNEL_NAME
+                                    4: A reference to stores results
+                                */
+                                if (
+                                    funcs.getChannelVariableAsString(serverConnectionHandlerID, ptr[t], new IntPtr(0), ref res) !=
+                                    Errors.ERROR_ok)
+                                {
+                                    // Error message
+                                    funcs.logMessage("Error", LogLevel.LogLevel_WARNING, "Plugin", serverConnectionHandlerID);
+                                    break;
+                                }
+                                // Convert the pointer to a string
+                                if ((result = Marshal.PtrToStringAnsi(res)) == null) break;
+                                // Print it
+                                funcs.printMessageToCurrentTab(result);
+                            }
+                            
 
-                            }
                             break;
+
                         case 2:
-                            IntPtr v = new IntPtr();
-                            if ((error = funcs.getChannelList(serverConnectionHandlerID, ref v)) != Errors.ERROR_ok)
-                            {
-                                funcs.printMessageToCurrentTab("Failure grabbing Channel List");
-                            }
-                            else
-                            {
-                                funcs.printMessageToCurrentTab("Creating UInt64 Iterator...");
-                                UInt64 iter = Convert.ToUInt64(v);
-                                funcs.printMessageToCurrentTab("Created Iterator...");
-                            }
-                            ts3plugin_freeMemory(v);
+
+                            break;
+
+                        default:
                             break;
                     }
+
                     break;
             }
         }

@@ -1066,6 +1066,16 @@ public enum PluginMenuType : int
     PLUGIN_MENU_TYPE_CLIENT,
 }
 
+public enum MenuType : int {
+    MENU_ID_CLIENT_1 = 1,
+    MENU_ID_CLIENT_2 = 2,
+    MENU_ID_CHANNEL_1 = 3,
+    MENU_ID_CHANNEL_2 = 4,
+    MENU_ID_CHANNEL_3 = 5,
+    MENU_ID_GLOBAL_1 = 6,
+    MENU_ID_GLOBAL_2 = 7
+};
+
 [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)] // 
 public struct MiniClientExport
 {

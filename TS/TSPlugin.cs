@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,24 +26,21 @@ namespace TS
 
         #endregion
         public TS3Functions Functions { get; set; }
+        
 
-
-        public String PluginName = "Plugin name";
-        public String PluginVersion = "0.1";
-        public int ApiVersion = 19;
-        public String Author = "Dimentox";
-        public String Description = "A plugin for some ts server";
-        public String PluginID { get; set; }
+        public string PluginName = "Testing Plugin";
+        public string PluginVersion = "0.2";
+        public int ApiVersion = 20;
+        public string Author = "Birdboat";
+        public string Description = "A plugin for some ts server";
+        public string PluginID { get; set; }
         public int Init()
         {
-         
             return 0;
         }
         public void Shutdown()
         {
 
         }
-       
-
     }
 }
