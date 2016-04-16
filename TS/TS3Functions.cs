@@ -1090,41 +1090,43 @@ public struct MiniClientExport
     public string nickname;
 }
 
-[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
-public unsafe struct PluginMenuItem
-{
+[StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public unsafe struct PluginMenuItem
+    {
 
-    /// PluginMenuType
-    public PluginMenuType type;
+        /// PluginMenuType
+        public PluginMenuType type;
 
-    /// int
-    public int id;
+        /// int
+        public int id;
 
-    // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
-    public fixed char text[128];
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public fixed char text[NativeConstants.PLUGIN_MENU_BUFSZ/2];
 
-    public fixed char icon[128];
-    /// char[128]
-    // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
-    // public string text;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+        public fixed char icon[NativeConstants.PLUGIN_MENU_BUFSZ/2];
+        /// char[128]    
+        // [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
+        // public string text;
 
-    /// char[128]
-    //[System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
-    //public string icon;
-}
+        /// char[128]
+        //[System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
+        //public string icon;
+    }
 
-[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
-public struct PluginHotkey
-{
+    [StructLayoutAttribute(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public unsafe struct PluginHotkey
+    {
 
-    /// char[128]
-    [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string keyword;
+        /// char[64]
+        [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
+        public fixed char keyword[NativeConstants.PLUGIN_HOTKEY_BUFSZ/2];
 
-    /// char[128]
-    [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string description;
-}
+        /// char[64]
+        [System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.ByValTStr, SizeConst = 128)]
+        public fixed char description[NativeConstants.PLUGIN_HOTKEY_BUFSZ/2];
+    }
+
 
 [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Explicit)]
 public struct Anonymous_344b905a_b983_4217_a33a_e37f6170018f
